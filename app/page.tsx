@@ -15,6 +15,12 @@ type Stats = {
   agg30?: Agg;
 };
 
+declare global {
+  interface TelegramWebApp { initData: string; expand: () => void }
+  interface TelegramNamespace { WebApp?: TelegramWebApp }
+  interface Window { Telegram?: TelegramNamespace }
+}
+
 function useTelegramInit() {
   const [ok, setOk] = useState(false);
 
@@ -71,6 +77,7 @@ export default function Home() {
         </button>
       </div>
 
+      {/* Линия: калории по дням */}
       <div className="h-56 bg-white rounded-xl shadow p-3">
         <h2 className="font-medium mb-2">Калории по дням</h2>
         <ResponsiveContainer width="100%" height="100%">
@@ -90,6 +97,7 @@ export default function Home() {
         </ResponsiveContainer>
       </div>
 
+      {/* Стек-бар: Б/Ж/У по дням */}
       <div className="h-56 bg-white rounded-xl shadow p-3">
         <h2 className="font-medium mb-2">Б/Ж/У по дням</h2>
         <ResponsiveContainer width="100%" height="100%">
@@ -105,6 +113,7 @@ export default function Home() {
         </ResponsiveContainer>
       </div>
 
+      {/* Карточки: суммарные за период */}
       <div className="grid grid-cols-3 gap-2">
         {(['kcal', 'prot', 'fat', 'carb'] as const).map((k) => (
           <div key={k} className="bg-white rounded-xl shadow p-3 text-center">
