@@ -5,14 +5,15 @@ import { cookieName, sign } from '@/lib/session';
 type VerifyBody = { initData: string };
 
 export async function POST(req: NextRequest) {
-  const bodyUnknown = await req.json().catch(() => null as unknown);
+  const bodyUnknown: unknown = await req.json().catch(() => null);
 
-  if (
-    !bodyUnknown ||
-    typeof bodyUnknown !== 'object' ||
-    bodyUnknown === null ||
-    typeof (bodyUnknown as Record<string, unknown>).initData !== 'string'
-  ) {
+  const isValid =
+    bodyUnknown &&
+    typeof bodyUnknown === 'object' &&
+    bodyUnknown !== null &&
+    typeof (bodyUnknown as Record<string, unknown>).initData === 'string';
+
+  if (!isValid) {
     return NextResponse.json({ ok: false, error: 'initData required' }, { status: 400 });
   }
 
